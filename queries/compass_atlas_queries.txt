@@ -1,0 +1,259 @@
+============================================================
+  Stage 4 – MongoDB Compass & Atlas Query Reference
+  Student : Abdul Samad Khan
+  Database: Event_db   |   Collection: Event
+============================================================
+
+HOW TO USE THIS FILE
+────────────────────
+MongoDB Compass  → paste the Filter JSON into the Filter bar
+                   (top of the Documents tab)
+MongoDB Atlas    → Browse Collections → Event →
+                   use the Filter bar on the Documents tab
+                   OR use the Aggregation tab
+
+
+=============================================================
+  COMPASS / ATLAS – SIMPLE QUERY FILTERS
+  (copy the JSON block directly into the Filter bar)
+=============================================================
+
+── CQ1:  Concert events in 2024 with Excellent atmosphere
+         and Ticket_Price above €90  (5 results expected)
+Filter:
+{ "Event_Type": "Concert", "Event_Year": 2024, "Atmosphere": "Excellent", "Ticket_Price": { "$gt": 90 } }
+
+Project (Compass "Project" field – leave blank to show all, or paste):
+{ "_id": 1, "Event_Type": 1, "Event_Year": 1, "Ticket_Price": 1, "Atmosphere": 1 }
+
+─────────────────────────────────────────────────────────────
+
+── CQ2:  Ticket price BETWEEN €80 and €100 in 2023,
+         Excellent atmosphere  (7 results expected)
+Filter:
+{ "Event_Year": 2023, "Atmosphere": "Excellent", "Ticket_Price": { "$gte": 80, "$lte": 100 } }
+
+Project:
+{ "_id": 1, "Event_Type": 1, "Event_Year": 1, "Ticket_Price": 1, "Atmosphere": 1 }
+
+─────────────────────────────────────────────────────────────
+
+── CQ3:  Sponsors array contains BOTH Tesco AND Lidl,
+         year 2019 or 2020, Good atmosphere  (4 results expected)
+Filter:
+{ "Sponsors": { "$all": ["Tesco", "Lidl"] }, "Event_Year": { "$in": [2019, 2020] }, "Atmosphere": "Good" }
+
+Project:
+{ "_id": 1, "Event_Type": 1, "Event_Year": 1, "Sponsors": 1, "Atmosphere": 1 }
+
+─────────────────────────────────────────────────────────────
+
+── CQ4:  Exhibition events from 2022 onwards at venues
+         with NO seating and Poor atmosphere  (7 results expected)
+Filter:
+{ "Event_Type": "Exhibition", "Event_Year": { "$gte": 2022 }, "Sports_Hall.Seating": "None", "Atmosphere": "Poor" }
+
+Project:
+{ "_id": 1, "Event_Type": 1, "Event_Year": 1, "Atmosphere": 1, "Sports_Hall.Seating": 1, "Sports_Hall.Name": 1 }
+
+─────────────────────────────────────────────────────────────
+
+── CQ5:  Technician name begins with "Dan", year 2022
+         ($regex query)  (5 results expected)
+Filter:
+{ "Technician.Name": { "$regex": "^Dan", "$options": "i" }, "Event_Year": 2022 }
+
+Project:
+{ "_id": 1, "Event_Type": 1, "Event_Year": 1, "Atmosphere": 1, "Technician.Name": 1 }
+
+─────────────────────────────────────────────────────────────
+
+── CQ6:  $or – events in 2019 OR 2024 with Excellent
+         atmosphere and Ticket_Price above €110  (6 results expected)
+Filter:
+{ "$or": [ { "Event_Year": 2019 }, { "Event_Year": 2024 } ], "Atmosphere": "Excellent", "Ticket_Price": { "$gt": 110 } }
+
+Project:
+{ "_id": 1, "Event_Type": 1, "Event_Year": 1, "Ticket_Price": 1, "Atmosphere": 1 }
+
+─────────────────────────────────────────────────────────────
+
+── CQ7:  Conference events in 2022/2023 with Good atmosphere
+         at venues with exactly ONE sport  ($size)  (7 results expected)
+Filter:
+{ "Event_Type": "Conference", "Event_Year": { "$in": [2022, 2023] }, "Atmosphere": "Good", "Sports_Hall.Sport": { "$size": 1 } }
+
+Project:
+{ "_id": 1, "Event_Type": 1, "Event_Year": 1, "Sports_Hall.Sport": 1, "Sports_Hall.Name": 1 }
+
+─────────────────────────────────────────────────────────────
+
+── CQ8:  Sport events in 2022 with Security_Cost > €6,500
+         and Technician NOT holding Cert qualification  ($ne)
+         (4 results expected)
+Filter:
+{ "Event_Type": "Sport", "Event_Year": 2022, "Security_Cost": { "$gt": 6500 }, "Technician.Qualification": { "$ne": "Cert" } }
+
+Project:
+{ "_id": 1, "Event_Type": 1, "Security_Cost": 1, "Technician.Qualification": 1, "Technician.Name": 1 }
+
+
+=============================================================
+  COMPASS – AGGREGATION PIPELINE TAB
+  (Add each stage one at a time in the Aggregation tab)
+=============================================================
+
+── CA1:  Group by Event_Type (count > 140), avg ticket, sorted
+         [Shows: $group → $match → $project → $sort]
+
+Stage 1 – $group
+{
+  "_id": "$Event_Type",
+  "Total_Events": { "$sum": 1 },
+  "Avg_Ticket": { "$avg": "$Ticket_Price" }
+}
+
+Stage 2 – $match
+{ "Total_Events": { "$gt": 140 } }
+
+Stage 3 – $project
+{
+  "_id": 1,
+  "Total_Events": 1,
+  "Avg_Ticket": { "$round": ["$Avg_Ticket", 2] }
+}
+
+Stage 4 – $sort
+{ "Avg_Ticket": -1 }
+
+─────────────────────────────────────────────────────────────
+
+── CA2:  $bucket on Ticket_Price ranges with avg crowd
+         [Shows: $bucket]
+
+Stage 1 – $bucket
+{
+  "groupBy": "$Ticket_Price",
+  "boundaries": [0, 1, 31, 61, 91, 121],
+  "default": "Other",
+  "output": {
+    "Event_Count": { "$sum": 1 },
+    "Avg_Crowd":   { "$avg": "$Actual_Crowd" }
+  }
+}
+
+Stage 2 – $project
+{
+  "_id": 1,
+  "Event_Count": 1,
+  "Avg_Crowd": { "$round": ["$Avg_Crowd", 0] }
+}
+
+─────────────────────────────────────────────────────────────
+
+── CA3:  $unwind Sponsors array, group by sponsor, top 5
+         [Shows: $unwind → $group → $project → $sort → $limit]
+
+Stage 1 – $unwind
+"$Sponsors"
+
+Stage 2 – $group
+{
+  "_id": "$Sponsors",
+  "Total_Events":  { "$sum": 1 },
+  "Avg_SponValue": { "$avg": "$Sponsorship_Value" }
+}
+
+Stage 3 – $project
+{
+  "_id": 1,
+  "Total_Events": 1,
+  "Avg_SponValue": { "$round": ["$Avg_SponValue", 0] }
+}
+
+Stage 4 – $sort
+{ "Total_Events": -1 }
+
+Stage 5 – $limit
+5
+
+─────────────────────────────────────────────────────────────
+
+── CA4:  $facet multi-faced dashboard
+         [Shows: $facet with 3 sub-pipelines]
+
+Stage 1 – $facet
+{
+  "TopVenuesByCrowd": [
+    { "$group": { "_id": "$Sports_Hall.Name", "Total_Crowd": { "$sum": "$Actual_Crowd" }, "Total_Events": { "$sum": 1 } } },
+    { "$sort": { "Total_Crowd": -1 } },
+    { "$limit": 5 }
+  ],
+  "AtmosphereBreakdown": [
+    { "$group": { "_id": "$Atmosphere", "Total_Events": { "$sum": 1 } } },
+    { "$sort": { "Total_Events": -1 } }
+  ],
+  "AvgTicketByType": [
+    { "$group": { "_id": "$Event_Type", "Avg_Ticket": { "$avg": "$Ticket_Price" } } },
+    { "$project": { "_id": 1, "Avg_Ticket": { "$round": ["$Avg_Ticket", 2] } } },
+    { "$sort": { "Avg_Ticket": -1 } }
+  ]
+}
+
+─────────────────────────────────────────────────────────────
+
+── CA5:  Computed field: total revenue per event (Concert/Sport 2022)
+         [Shows: $match → $addFields → $match → $sort]
+
+Stage 1 – $match
+{ "Event_Type": { "$in": ["Concert", "Sport"] }, "Event_Year": 2022 }
+
+Stage 2 – $addFields
+{
+  "Total_Revenue": {
+    "$add": [
+      "$Food_Sales",
+      "$Merchandise_Sales",
+      { "$multiply": ["$Ticket_Price", "$Actual_Crowd"] }
+    ]
+  }
+}
+
+Stage 3 – $match
+{ "Total_Revenue": { "$gt": 400000 } }
+
+Stage 4 – $sort
+{ "Total_Revenue": -1 }
+
+
+=============================================================
+  MONGOSH SHELL COMMANDS FOR SCREENCASTS
+  (Connection string already set – just paste these)
+=============================================================
+
+── Connect to Atlas (paste once at start of every screencast):
+use Event_db
+
+── Show total documents:
+db.Event.countDocuments()
+
+── Show first document (scene-setting):
+db.Event.findOne()
+
+── Q1 (shell format – use for screencasts):
+db.Event.find(
+  { Event_Type:"Concert", Event_Year:2024, Atmosphere:"Excellent", Ticket_Price:{$gt:90} },
+  { _id:1, Event_Type:1, Event_Year:1, Ticket_Price:1, Atmosphere:1 }
+)
+db.Event.countDocuments({ Event_Type:"Concert", Event_Year:2024, Atmosphere:"Excellent", Ticket_Price:{$gt:90} })
+
+── Quick Atlas connection test:
+mongosh "mongodb+srv://<username>:<password>@<your-cluster>.mongodb.net/Event_db"
+
+── Run full query file (all 35 queries + 15 pipelines):
+-- open mongosh, then replace <PATH> with the folder where the file is saved:
+load("<PATH>/Msc2026_Event_Queries_A_S_Khan.js")
+-- Example (Windows):  load("C:/Users/YourName/Documents/Msc2026_Event_Queries_A_S_Khan.js")
+-- Example (Mac/Linux): load("/Users/YourName/Documents/Msc2026_Event_Queries_A_S_Khan.js")
+
+============================================================
