@@ -13,7 +13,24 @@ Completed for the Advanced Relational Database module of my MSc in Data Analytic
 | **Simple queries** | 35 (Q1 to Q35), each with a written question and expected result count |
 | **Aggregation pipelines** | 15 (A1 to A15) |
 | **Tools** | Mongo Shell (mongosh), MongoDB Compass, MongoDB Atlas, Excel (data generation) |
+| **Video walkthroughs** | 7 screencasts, listed [below](#video-walkthroughs) |
 | **Verified** | All 35 queries return their expected counts (see [Verification](#verification)) |
+
+## Video walkthroughs
+
+| Video | What it covers |
+|---|---|
+| [Setup and data import](https://youtu.be/7ft50i_3DAA) | Creating the database and importing the 1,000 documents |
+| [Pipelines A1 and A3](https://youtu.be/kJ2FtkDr2uE) | Grouping by event type; unwinding the Sponsors array |
+| [Pipelines A9 and A14](https://youtu.be/W3Q1eaezDpg) | Ticket price bands with `$bucket`; a dashboard with `$facet` |
+| [Pipeline A12](https://youtu.be/rmoX4PZvArI) | Classifying food sales with `$cond` |
+| [Pipeline A15](https://youtu.be/Bxuv2mCgDjE) | Hall occupancy rate with `$addFields` and `$divide` |
+| [Compass and Atlas: filter queries](https://youtu.be/s52I9tMq8ug) | Running the CQ filter queries in Compass and Atlas |
+| [Compass and Atlas: aggregation](https://youtu.be/sf2b1SGZXAU) | Building the CA pipelines in the Compass and Atlas aggregation tabs |
+
+| Setup and import | Aggregation pipelines | Compass and Atlas |
+|---|---|---|
+| [![Setup video](https://img.youtube.com/vi/7ft50i_3DAA/hqdefault.jpg)](https://youtu.be/7ft50i_3DAA) | [![Pipelines A1 and A3 video](https://img.youtube.com/vi/kJ2FtkDr2uE/hqdefault.jpg)](https://youtu.be/kJ2FtkDr2uE) | [![Compass and Atlas video](https://img.youtube.com/vi/s52I9tMq8ug/hqdefault.jpg)](https://youtu.be/s52I9tMq8ug) |
 
 ## Data model
 
