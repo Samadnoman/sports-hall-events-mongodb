@@ -14,6 +14,7 @@ Completed for the Advanced Relational Database module of my MSc in Data Analytic
 | **Aggregation pipelines** | 15 (A1 to A15) |
 | **Tools** | Mongo Shell (mongosh), MongoDB Compass, MongoDB Atlas, Excel (data generation) |
 | **Video walkthroughs** | 7 screencasts, listed [below](#video-walkthroughs) |
+| **Screenshots** | 65 result screenshots from mongosh, Compass and Atlas, in [`docs/screenshots`](docs/screenshots) |
 | **Verified** | All 35 queries return their expected counts (see [Verification](#verification)) |
 
 ## Video walkthroughs
@@ -31,6 +32,21 @@ Completed for the Advanced Relational Database module of my MSc in Data Analytic
 | Setup and import | Aggregation pipelines | Compass and Atlas |
 |---|---|---|
 | [![Setup video](https://img.youtube.com/vi/7ft50i_3DAA/hqdefault.jpg)](https://youtu.be/7ft50i_3DAA) | [![Pipelines A1 and A3 video](https://img.youtube.com/vi/kJ2FtkDr2uE/hqdefault.jpg)](https://youtu.be/kJ2FtkDr2uE) | [![Compass and Atlas video](https://img.youtube.com/vi/s52I9tMq8ug/hqdefault.jpg)](https://youtu.be/s52I9tMq8ug) |
+
+## Screenshots
+
+Every query and pipeline was run against the live Atlas cluster, and the output was captured. The full set of 65 screenshots is in [`docs/screenshots`](docs/screenshots), with an index.
+
+| Folder | Contents |
+|---|---|
+| [`01_setup`](docs/screenshots/01_setup) | `mongoimport`, `countDocuments()` returning 1,000, and `findOne()` |
+| [`02_find_queries`](docs/screenshots/02_find_queries) | Q1 to Q35 in mongosh |
+| [`03_aggregations`](docs/screenshots/03_aggregations) | A1 to A15 in mongosh |
+| [`04_compass_atlas`](docs/screenshots/04_compass_atlas) | Atlas cluster and Data Explorer, Compass connection, filter queries and aggregation builder |
+
+| Q20 in mongosh | A15 in mongosh | A1 in the Compass aggregation builder |
+|---|---|---|
+| ![Q20 result](docs/screenshots/02_find_queries/Q20.png) | ![A15 result](docs/screenshots/03_aggregations/A15.png) | ![Compass aggregation](docs/screenshots/04_compass_atlas/compass_06b_aggregation_stages_3_4.png) |
 
 ## Data model
 
@@ -106,6 +122,7 @@ queries/
 scripts/
   verify_query_counts.py       Checks all 35 query counts without a MongoDB server
 docs/progress_logs/            Six progress logs, July to August 2026 (Uploads 1 to 6)
+docs/screenshots/              65 screenshots of results in mongosh, Compass and Atlas
 ```
 
 ## How to run
@@ -125,7 +142,7 @@ docs/progress_logs/            Six progress logs, July to August 2026 (Uploads 1
 
 ## Verification
 
-`scripts/verify_query_counts.py` reads each query's filter from the `.js` file and evaluates it against the JSON data with plain Python. It then compares the result with the expected count written beside each question. All 35 match.
+`scripts/verify_query_counts.py` reads each query's filter from the `.js` file and evaluates it against the JSON data with plain Python. It then compares the result with the expected count written beside each question. All 35 match, and the document IDs in the screenshots match the IDs the script returns.
 
 ```
 python scripts/verify_query_counts.py
