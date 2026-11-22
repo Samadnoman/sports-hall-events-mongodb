@@ -1,6 +1,6 @@
 # Screenshots
 
-Output captured from the live MongoDB Atlas cluster (`Event_db.Event`, 1,000 documents). Each query screenshot shows the question, the expected count and the documents returned. Some longer results run past the bottom of the screen, so not every document is visible; `scripts/verify_query_counts.py` confirms the full counts.
+Output captured from the live MongoDB Atlas cluster (`Event_db.Event`, 1,000 documents). Each query screenshot shows the question, the expected count and the documents returned. Some longer results run past the bottom of the screen, so not every document is visible. For the six cut-off queries (Q2, Q5, Q18, Q19, Q26 and Q32) there is also a `_full_result.png` listing every matching document. These are generated from the dataset with the same filter, are clearly labelled, and are not terminal screenshots. `scripts/verify_query_counts.py` confirms all 35 counts.
 
 Passwords and connection strings are not shown. The import command uses an `<atlas_uri>` placeholder, and the Compass connection string is redacted.
 
@@ -17,10 +17,10 @@ Passwords and connection strings are not shown. The import command uses an `<atl
 | Query | Operators | Screenshot |
 |---|---|---|
 | Q1 | $eq, $gt, projection | [Q01.png](02_find_queries/Q01.png) |
-| Q2 | dot notation on embedded doc, $gt | [Q02.png](02_find_queries/Q02.png) |
+| Q2 | dot notation on embedded doc, $gt | [Q02.png](02_find_queries/Q02.png), full result: [Q02_full_result.png](02_find_queries/Q02_full_result.png) |
 | Q3 | $eq, $gt, multiple criteria | [Q03.png](02_find_queries/Q03.png) |
 | Q4 | $in for year, $gt for duration | [Q04.png](02_find_queries/Q04.png) |
-| Q5 | $in for year, dot notation, multiple criteria | [Q05.png](02_find_queries/Q05.png) |
+| Q5 | $in for year, dot notation, multiple criteria | [Q05.png](02_find_queries/Q05.png), full result: [Q05_full_result.png](02_find_queries/Q05_full_result.png) |
 | Q6 | $gt, multiple dot-notation fields | [Q06.png](02_find_queries/Q06.png) |
 | Q7 | dot notation, embedded doc, year | [Q07.png](02_find_queries/Q07.png) |
 | Q8 | $gte, $lte: equivalent of SQL BETWEEN | [Q08.png](02_find_queries/Q08.png) |
@@ -33,21 +33,21 @@ Passwords and connection strings are not shown. The import command uses an `<atl
 | Q15 | $regex on Technician.Name | [Q15.png](02_find_queries/Q15.png) |
 | Q16 | dot notation $gt on Capacity, $eq on Event_Type and Year | [Q16.png](02_find_queries/Q16.png) |
 | Q17 | $nin on array: Refreshments does NOT include Coffee | [Q17.png](02_find_queries/Q17.png) |
-| Q18 | $and implicit, dot notation into Technician | [Q18.png](02_find_queries/Q18.png) |
-| Q19 | $gte on year, dot notation for Seating | [Q19.png](02_find_queries/Q19.png) |
+| Q18 | $and implicit, dot notation into Technician | [Q18.png](02_find_queries/Q18.png), full result: [Q18_full_result.png](02_find_queries/Q18_full_result.png) |
+| Q19 | $gte on year, dot notation for Seating | [Q19.png](02_find_queries/Q19.png), full result: [Q19_full_result.png](02_find_queries/Q19_full_result.png) |
 | Q20 | $gt on two numeric fields, year | [Q20.png](02_find_queries/Q20.png) |
 | Q21 | $in on county array for Sports_Hall.County | [Q21.png](02_find_queries/Q21.png) |
 | Q22 | $nin on Event_Type, $gt on Ticket_Price | [Q22.png](02_find_queries/Q22.png) |
 | Q23 | $gte on Duration, $in on Event_Type, $in on Year | [Q23.png](02_find_queries/Q23.png) |
 | Q24 | dot notation Technician.County, multiple criteria | [Q24.png](02_find_queries/Q24.png) |
 | Q25 | $and: multiple equality conditions | [Q25.png](02_find_queries/Q25.png) |
-| Q26 | $size on Sports_Hall.Sport array | [Q26.png](02_find_queries/Q26.png) |
+| Q26 | $size on Sports_Hall.Sport array | [Q26.png](02_find_queries/Q26.png), full result: [Q26_full_result.png](02_find_queries/Q26_full_result.png) |
 | Q27 | $nin on Sponsor_Type, $in on Atmosphere | [Q27.png](02_find_queries/Q27.png) |
 | Q28 | $eq on Total_Hours, $gt on Security_Cost | [Q28.png](02_find_queries/Q28.png) |
 | Q29 | $gt on Sports_Hall.Cost: premium venues only | [Q29.png](02_find_queries/Q29.png) |
 | Q30 | Event_Month, Event_Type, Atmosphere | [Q30.png](02_find_queries/Q30.png) |
 | Q31 | $in on Event_Type, month, atmosphere | [Q31.png](02_find_queries/Q31.png) |
-| Q32 | $size on Refreshments array: all 4 items present | [Q32.png](02_find_queries/Q32.png) |
+| Q32 | $size on Refreshments array: all 4 items present | [Q32.png](02_find_queries/Q32.png), full result: [Q32_full_result.png](02_find_queries/Q32_full_result.png) |
 | Q33 | $eq on Ticket_Price = 0, $gt on Actual_Crowd, year | [Q33.png](02_find_queries/Q33.png) |
 | Q34 | $ne on Technician.Qualification | [Q34.png](02_find_queries/Q34.png) |
 | Q35 | $or operator: explicit use | [Q35.png](02_find_queries/Q35.png) |
