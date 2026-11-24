@@ -2,7 +2,7 @@
 
 A document database of 1,000 events held at Irish sports halls, built and queried in MongoDB. The project covers data modelling with embedded documents and arrays, 35 query-language questions, 15 aggregation pipelines, and running the same work in the Mongo Shell, MongoDB Compass and MongoDB Atlas.
 
-Completed for the Advanced Relational Database module of my MSc in Data Analytics (2026).
+Built for the Advanced Relational Database module of my MSc in Data Analytics and completed in August 2026.
 
 ## Project at a glance
 
@@ -12,6 +12,7 @@ Completed for the Advanced Relational Database module of my MSc in Data Analytic
 | **Documents** | 1,000 events, 2019 to 2024, at 15 sports halls |
 | **Simple queries** | 35 (Q1 to Q35), each with a written question and expected result count |
 | **Aggregation pipelines** | 15 (A1 to A15) |
+| **Completed** | August 2026 (uploaded to GitHub in November 2026) |
 | **Tools** | Mongo Shell (mongosh), MongoDB Compass, MongoDB Atlas, Excel (data generation) |
 | **Video walkthroughs** | 7 screencasts, listed [below](#video-walkthroughs) |
 | **Screenshots** | 65 result screenshots from mongosh, Compass and Atlas, in [`docs/screenshots`](docs/screenshots) |
