@@ -1,6 +1,6 @@
 # Screenshots
 
-Output captured from the live MongoDB Atlas cluster (`Event_db.Event`, 1,000 documents). Each query screenshot shows the question, the expected count and the documents returned. Some longer results run past the bottom of the screen, so not every document is visible. For the six cut-off queries (Q2, Q5, Q18, Q19, Q26 and Q32) there is also a `_full_result.png` listing every matching document. These are generated from the dataset with the same filter, are clearly labelled, and are not terminal screenshots. `scripts/verify_query_counts.py` confirms all 35 counts.
+Output captured from the live MongoDB Atlas cluster (`Event_db.Event`, 1,000 documents). Each query screenshot shows the question, the expected count and the documents returned. Some longer results run past the bottom of the screen, so not every document is visible. For the six cut-off queries (Q2, Q5, Q18, Q19, Q26 and Q32) there is also a `_full_result.png` showing every matching document. These were captured by running the same filter and projection in MongoDB Atlas Data Explorer, with the document count (for example "1 – 7 of 7") at the top. Because the results list is taller than the screen, each image is made from consecutive scrolled captures of the same results list, joined in order. `scripts/verify_query_counts.py` confirms all 35 counts.
 
 Passwords and connection strings are not shown. The import command uses an `<atlas_uri>` placeholder, and the Compass connection string is redacted.
 
